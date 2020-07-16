@@ -19,10 +19,6 @@ class Node {
     init(url: String, name: String) {
         self.url = url;
         self.name = name;
-        blocks = [
-            Block(id: "001", data: "Lorem ipsum"),
-            Block(id: "002", data: "Lorem ipsum"),
-            Block(id: "003", data: "Lorem ipsum"),
-        ];
+        self.blocks = [];
     }
 }

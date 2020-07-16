@@ -8,33 +8,46 @@
 
 import UIKit
 
+struct Root : Decodable {
+    let data : [BlockData]
+}
+struct BlockData : Decodable {
+    let id : String
+    let type: String
+    let attributes : AttributeData
+}
+struct AttributeData : Decodable {
+    let index : Int
+    let timestamp: Int
+    let data : String
+    let hash: String
+}
 class TableViewViewController: UITableViewController {
     var tableViewData = [Node]()
 
-//    private func getData(url: String) {
-//        let task = URLSession.shared.dataTask(with: URL(string: url)!, completionHandler: { data, response, error in
-//
-//            guard let data = data, error == nil else {
-//                print("error occurred");
-//                return;
-//            }
-//            var result: Response?
-//            do {
-//                result = JSONDecoder().decode(Response.self, from: data )
-//            }
-//            catch {
-//                print("failed `\(error.localizedDescription)")
-//            }
-//            guard let json = result else {
-//                return
-//            }
-//            print(json);
-//         })
-//         task.resume()
-//    }
+    //Sample API Call to get Blocks
+    private func getData(url: String, completion: @escaping ((Root) -> Void)) {
+      let endpoint = URL(string: "\(url)\(kBlocksApiPath)")!
+      let request = URLRequest(url: endpoint)
+
+      let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+          guard let data = data else {
+            return
+          }
+          do {
+            let json = try JSONDecoder().decode(Root.self, from: data)
+            completion(json);
+          } catch {
+            print("didnt work \(error).")
+          }
+      }
+      task.resume()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        self.title = "Toy Blocks";
+        
         let node1 = Node(url: "https://thawing-springs-53971.herokuapp.com", name: "Thawing Springs")
         let node2 = Node(url: "https://secret-lowlands-62331.herokuapp.com", name: "Secret Lowlands")
         let node3 = Node(url: "https://calm-anchorage-82141.herokuapp.com", name: "Calm Anchorage")
@@ -47,23 +60,14 @@ class TableViewViewController: UITableViewController {
         return tableViewData.count;
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableViewData[section].open == true {
-            return tableViewData[section].blocks.count + 1
-        } else {
-            return 1
-        }
+        return 1
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "NodeTableViewCell") as! NodeTableViewCell
-            cell.nameLabel.text = tableViewData[indexPath.section].name
-            cell.urlLabel.text = tableViewData[indexPath.section].url
-            return cell;
-        } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "NodeCell") else { return UITableViewCell() }
-            cell.textLabel?.text = tableViewData[indexPath.section].blocks[indexPath.row - 1].data
-            return cell;
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NodeTableViewCell") as! NodeTableViewCell
+        cell.nameLabel.text = tableViewData[indexPath.section].name
+        cell.urlLabel.text = tableViewData[indexPath.section].url
+        return cell;
     }
+
 }
 

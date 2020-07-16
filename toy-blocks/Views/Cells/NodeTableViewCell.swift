@@ -11,10 +11,22 @@ import UIKit
 class NodeTableViewCell: UITableViewCell {
     @IBOutlet weak var urlLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
-    
+    @IBOutlet weak var statusLabel: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+
+        nameLabel.textColor = UIColorTheme.PrimaryFontColor
+        nameLabel.textAlignment = .left
+        nameLabel.font = UIFontTheme.Regular()
+
+        urlLabel.textColor = UIColorTheme.SecondaryFontColor
+        urlLabel.textAlignment = .left
+        urlLabel.font = UIFontTheme.Regular(.small)
+
+        statusLabel.textColor = UIColorTheme.Primary
+        statusLabel.textAlignment = .right
+        statusLabel.font = UIFontTheme.Regular(.xTiny)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
