@@ -1,4 +1,4 @@
-# Instructions:
+Instructions:
 
 The current application is displaying a list of nodes. Don’t worry about naming convention here, the names don’t matter. Each node represents a server. Each server implements the same API but returns different data. The important endpoints you will need to know for each server are:
 
@@ -9,7 +9,7 @@ Each node has many blocks and the blocks for each node are returned from the blo
 
 Currently the application is displaying the list of nodes in a TableView.  We would like to retreive the status of each node when the view loads and retreive the blocks for a node when the node is opened.
 
-# Acceptance criteria:
+Acceptance criteria:
 
 1. Update the status of each node when the view loads
 2. Blocks are displayed when opening up the card if the status of the node is "online"
